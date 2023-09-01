@@ -16,7 +16,7 @@ class MonitoringPlugin:
         self._type = checktype
 
     def exit(self, exit_state = None, force_state = False, do_exit = True):
-        """Exits the check outputing the correct state, meesage and perfdata
+        """Exits the check outputing the correct state, message and perfdata
         or returns a tuple with (state, message, perfdata).
 
         Args:
