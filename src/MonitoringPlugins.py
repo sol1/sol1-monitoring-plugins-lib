@@ -3,7 +3,11 @@
 
 from loguru import logger
 
+
 class MonitoringPlugin:  
+    """Parent Monitoring Plugin class used to manage state, output and performance data
+    Can be used by itself or by a child class
+    """    
     def __init__(self, checktype = None):
         # The states of the server
         self.STATE_OK = 0            # We know it is OK and it isn't WARN or CRIT when set
@@ -12,8 +16,14 @@ class MonitoringPlugin:
         self.STATE_UNKNOWN = 3       # We don't know anything yet
         self._current_state = self.STATE_UNKNOWN
         self._message = ""
-        self._perfdata = ""
+        self._performance_data = ""
         self._type = checktype
+        self._success_summary = []
+        self._failure_summary = []
+
+    def __iter__(self):
+        for key, value in self.__dict__.items():
+            yield key, value
 
     def exit(self, exit_state = None, force_state = False, do_exit = True):
         """Exits the check outputing the correct state, message and perfdata
@@ -27,19 +37,27 @@ class MonitoringPlugin:
         Returns:
             tuple: return state, message and performance data of check
         """        
-        # If we pass in a new exit state then only change to it if we at a lower state
+        # If we pass in a new exit state then only change to it if we at a start state
         if exit_state is not None:
             if self.state < exit_state or self.state == self.STATE_UNKNOWN or force_state:
                 self.state = exit_state
 
+        first_line = "\n"
+        # add the summary to the top of the message
+        if self.state == self.STATE_OK:
+            if self.success_summary:
+                first_line = f"{', '.join(list(set(self.success_summary)))}{first_line}"
+        else:
+            if self.failure_summary:
+                first_line = f"{', '.join(list(set(self.failure_summary)))}{first_line}"
+
         # Add the check type to the top of the message        
         if self._type:
-            self._message = self._type + " check\n" + self._message
+            first_line = f"{self._type} check {first_line}"
 
         # Set the prefix for the message
-        self._message = f"{self.getStateLabel(self.state)}: {self.message}"
+        self._message = f"{self.getStateLabel(self.state)}: {first_line}{self.message}"
         
-
         # Print the message and perfdata, log the exit and exit with error code
         logger.info(f"Exiting check with state {self.state}")
         if do_exit:
@@ -157,15 +175,15 @@ class MonitoringPlugin:
             
     @property
     def performance_data(self):
-        return self._perfdata
+        return self._performance_data
     
     @performance_data.setter
     def performance_data(self, data):
-        self._perfdata += data
+        self._performance_data += data
 
     @performance_data.deleter
     def performance_data(self):
-        self._perfdata = ""
+        self._performance_data = ""
 
     def setPerformanceData(self, label:str, value, unit_of_measurement:str = "", warn = "", crit = "", minimum = "", maximum = ""):
         """Renders a performance data string and appends it to the plugin's performance data
@@ -187,3 +205,29 @@ class MonitoringPlugin:
             c - a continous counter (such as bytes transmitted on an interface)
         """        
         self.performance_data += f"{label}={value}{unit_of_measurement};{warn};{crit};{minimum};{maximum} "
+
+    @property
+    def failure_summary(self):
+        return self._failure_summary
+    
+    @failure_summary.setter
+    def failure_summary(self, data):
+        self._failure_summary.append(str(data))
+
+    @failure_summary.deleter
+    def failure_summary(self):
+        self._failure_summary = []
+
+    @property
+    def success_summary(self):
+        return self._success_summary
+    
+    @success_summary.setter
+    def success_summary(self, data):
+        self._success_summary.append(str(data))
+
+    @success_summary.deleter
+    def success_summary(self):
+        self._success_summary = []
+
+
