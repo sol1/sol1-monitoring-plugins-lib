@@ -166,7 +166,7 @@ Run tests
 ```
 python3.9.exe -m pytest tests/
 ```
-## Depoly 
+## Deploy 
 ```
 python3.9 -m twine upload dist/*
 ```
