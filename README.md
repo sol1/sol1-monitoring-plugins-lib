@@ -145,3 +145,28 @@ OK: Test check All is well
 Ok: This is going well
 Ok: This one worked too
 ```
+
+
+# Development
+## Setup
+```
+python -m pip install --upgrade pip setuptools wheel twine pytest
+python -m pip install -r requirements.txt
+```
+## Build
+```
+python3.9 .\setup.py sdist bdist_wheel
+```
+## Tests
+Install build package to current directory 
+```
+python -m pip install -e .
+```
+Run tests
+```
+python3.9.exe -m pytest tests/
+```
+## Depoly 
+```
+python3.9 -m twine upload dist/*
+```
