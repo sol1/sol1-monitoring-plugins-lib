@@ -204,7 +204,7 @@ class MonitoringPlugin:
             B - bytes (also KB, MB, TB)
             c - a continous counter (such as bytes transmitted on an interface)
         """        
-        self.performance_data += f"{label}={value}{unit_of_measurement};{warn};{crit};{minimum};{maximum} "
+        self.performance_data = f"{label}={value}{unit_of_measurement};{warn};{crit};{minimum};{maximum} "
 
     @property
     def failure_summary(self):
