@@ -16,7 +16,8 @@ Code examples can be found in the [`examples`](./examples/check_day_of_the_week.
 
 
 # Development
-Contributions are welcome, changes need to be backwards compatible as this library is used by 100's of monitoring checks.
+Contributions are welcome, changes need to be backwards compatible.
+
 ## Setup
 ```
 python3 -m pip install --upgrade pip setuptools wheel twine pytest
