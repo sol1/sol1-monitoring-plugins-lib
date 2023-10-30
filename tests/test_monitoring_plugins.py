@@ -1,11 +1,5 @@
 import pytest
-from MonitoringPlugins import MonitoringPlugin
-# from monitoring_plugins.src.MonitoringPlugins import MonitoringPlugin, MonitoringLine
-
-# class TestSimpleThreasholds(unittest.TestCase):
-#     def testEquals():
-#         plugin = MonitoringLine()
-#         assert plugin._parseSimpleThreshold(10) == (None, None, float(10))
+from sol1_monitoring_plugins_lib import MonitoringPlugin
 
 
 def test_initialization():
@@ -16,9 +10,11 @@ def test_initialization():
     assert plugin.failure_summary == []
     assert plugin.success_summary == []
 
+
 def test_initialization_with_type():
     plugin = MonitoringPlugin("Example")
     assert plugin._type == "Example"
+
 
 def test_states():
     plugin = MonitoringPlugin()
@@ -27,20 +23,22 @@ def test_states():
     assert plugin.STATE_CRITICAL == 2
     assert plugin.STATE_UNKNOWN == 3
 
+
 def test_state_transitions():
     plugin = MonitoringPlugin()
-    
+
     plugin.setOk()
     assert plugin.state == plugin.STATE_OK
-    
+
     plugin.setWarning()
     assert plugin.state == plugin.STATE_WARNING
-    
+
     plugin.setCritical()
     assert plugin.state == plugin.STATE_CRITICAL
-    
+
     plugin.setOk()  # Should not override CRITICAL
     assert plugin.state == plugin.STATE_CRITICAL
+
 
 def test_message_setting_and_deletion():
     plugin = MonitoringPlugin()
@@ -48,6 +46,7 @@ def test_message_setting_and_deletion():
     assert plugin.message == "Test Message"
     del plugin.message
     assert plugin.message == ""
+
 
 def test_performance_data_setting_and_deletion():
     plugin = MonitoringPlugin()
@@ -58,18 +57,19 @@ def test_performance_data_setting_and_deletion():
     del plugin.performance_data
     assert plugin.performance_data == ""
 
+
 def test_summary_functionality():
     plugin = MonitoringPlugin()
     plugin.success_summary = "Success 1"
     plugin.success_summary = "Success 2"
     plugin.failure_summary = "Failure 1"
-    
+
     assert plugin.success_summary == ["Success 1", "Success 2"]
     assert plugin.failure_summary == ["Failure 1"]
+
 
 def test_exit_functionality():
     plugin = MonitoringPlugin("Test")
     plugin.setMessage("Test Message", plugin.STATE_OK, True, False)
     plugin.setPerformanceData(label='test', value=5)
     assert plugin.exit(do_exit=False) == (0, 'OK: Test check \nOk: Test Message', 'test=5;;;; ')
-    

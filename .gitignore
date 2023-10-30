@@ -6,3 +6,5 @@ dist/
 venv/
 build/
 .pytest*/
+.pylintrc
+settings.json

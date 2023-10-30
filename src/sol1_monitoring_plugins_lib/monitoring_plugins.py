@@ -4,11 +4,12 @@
 from loguru import logger
 
 
-class MonitoringPlugin:  
+class MonitoringPlugin:
     """Parent Monitoring Plugin class used to manage state, output and performance data
     Can be used by itself or by a child class
-    """    
-    def __init__(self, checktype = None):
+    """
+
+    def __init__(self, checktype=None):
         # The states of the server
         self.STATE_OK = 0            # We know it is OK and it isn't WARN or CRIT when set
         self.STATE_WARNING = 1       # We know it is WARN and isn't CRIT when set
@@ -25,7 +26,7 @@ class MonitoringPlugin:
         for key, value in self.__dict__.items():
             yield key, value
 
-    def exit(self, exit_state = None, force_state = False, do_exit = True):
+    def exit(self, exit_state=None, force_state=False, do_exit=True):
         """Exits the check outputing the correct state, message and perfdata
         or returns a tuple with (state, message, perfdata).
 
@@ -36,7 +37,7 @@ class MonitoringPlugin:
 
         Returns:
             tuple: return state, message and performance data of check
-        """        
+        """
         # If we pass in a new exit state then only change to it if we at a start state
         if exit_state is not None:
             if self.state < exit_state or self.state == self.STATE_UNKNOWN or force_state:
@@ -51,13 +52,13 @@ class MonitoringPlugin:
             if self.failure_summary:
                 first_line = f"{', '.join(list(set(self.failure_summary)))}{first_line}"
 
-        # Add the check type to the top of the message        
+        # Add the check type to the top of the message
         if self._type:
             first_line = f"{self._type} check {first_line}"
 
         # Set the prefix for the message
         self._message = f"{self.getStateLabel(self.state)}: {first_line}{self.message}"
-        
+
         # Print the message and perfdata, log the exit and exit with error code
         logger.info(f"Exiting check with state {self.state}")
         if do_exit:
@@ -86,7 +87,7 @@ class MonitoringPlugin:
 
         Returns:
             str: Human readable state text
-        """        
+        """
         label = "INVALID ({state})"
         if state == self.STATE_OK:
             label = "OK"
@@ -97,29 +98,29 @@ class MonitoringPlugin:
         elif state == self.STATE_UNKNOWN:
             label = "UNKNOWN"
         logger.debug(f"Return state label for state ({state}): {label}")
-        return label            
+        return label
 
     def setOk(self):
         """Set the plugin state to OK if current state is UNKNOWN
-        """        
+        """
         logger.debug("setOk")
         if self.state == self.STATE_UNKNOWN:
             self.state = self.STATE_OK
 
     def setWarning(self):
         """Set the plugin state to WARNING if current state is not CRITICAL
-        """        
+        """
         logger.debug("setWarning")
         if self.state != self.STATE_CRITICAL:
             self.state = self.STATE_WARNING
 
     def setCritical(self):
         """Set the plugin state to CRITICAL
-        """        
+        """
         logger.debug("setCritical")
         self.state = self.STATE_CRITICAL
 
-    def setState(self,state):
+    def setState(self, state):
         """Requests the plugin state be updated based on set*() rules and 
         return the value of the plugin state afterwards
 
@@ -128,7 +129,7 @@ class MonitoringPlugin:
 
         Returns:
             int: One of the 4 class STATE constants
-        """        
+        """
         logger.debug(f"setState({state})")
         if state == self.STATE_OK:
             self.setOk()
@@ -151,7 +152,7 @@ class MonitoringPlugin:
     def message(self):
         self._message = ""
 
-    def setMessage(self, msg, state = None, set_state = False, no_prefix = False):
+    def setMessage(self, msg, state=None, set_state=False, no_prefix=False):
         """Adds a message to the plugin output. 
         Optionally allows for a prefix based on state for the message and/or setting the state using setState.
 
@@ -160,11 +161,11 @@ class MonitoringPlugin:
             state (int, optional): State for the msg text. Defaults to None.
             set_state (bool, optional): Uses setState to change the plugin's state. Defaults to False.
             no_prefix (bool, optional): Supress the prefix for msg text. Defaults to False.
-        """        
+        """
         # If state isn't set then use the current state
         if state is None:
             state = self.state
-        # change state 
+        # change state
         if set_state:
             self.setState(state)
         # message only
@@ -172,11 +173,11 @@ class MonitoringPlugin:
             self._message += msg
         else:
             self._message += f"{self.getStateLabel(state).title()}: {msg}"
-            
+
     @property
     def performance_data(self):
         return self._performance_data
-    
+
     @performance_data.setter
     def performance_data(self, data):
         self._performance_data += data
@@ -185,7 +186,7 @@ class MonitoringPlugin:
     def performance_data(self):
         self._performance_data = ""
 
-    def setPerformanceData(self, label:str, value, unit_of_measurement:str = "", warn = "", crit = "", minimum = "", maximum = ""):
+    def setPerformanceData(self, label: str, value, unit_of_measurement: str = "", warn="", crit="", minimum="", maximum=""):
         """Renders a performance data string and appends it to the plugin's performance data
 
         Args:
@@ -203,13 +204,13 @@ class MonitoringPlugin:
             % - percentage
             B - bytes (also KB, MB, TB)
             c - a continous counter (such as bytes transmitted on an interface)
-        """        
+        """
         self.performance_data = f"{label}={value}{unit_of_measurement};{warn};{crit};{minimum};{maximum} "
 
     @property
     def failure_summary(self):
         return self._failure_summary
-    
+
     @failure_summary.setter
     def failure_summary(self, data):
         self._failure_summary.append(str(data))
@@ -221,7 +222,7 @@ class MonitoringPlugin:
     @property
     def success_summary(self):
         return self._success_summary
-    
+
     @success_summary.setter
     def success_summary(self, data):
         self._success_summary.append(str(data))
@@ -229,4 +230,3 @@ class MonitoringPlugin:
     @success_summary.deleter
     def success_summary(self):
         self._success_summary = []
-

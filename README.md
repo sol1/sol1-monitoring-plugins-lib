@@ -4,7 +4,7 @@ Monitoring Plugins are tools to assist in the creation of monitoring checks for 
 
 ## MonitoringPlugin
 ```python
-from MonitoringPlugins import MonitoringPlugin
+from sol1_monitoring_plugins_lib import MonitoringPlugin
 ```
 This class manages the state, output message and performance data of your check as well as returning this data and exiting the script.
 

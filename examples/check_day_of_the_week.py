@@ -2,7 +2,7 @@ import argparse
 from loguru import logger
 from datetime import datetime
 
-from MonitoringPlugins import MonitoringPlugin
+from sol1_monitoring_plugins_lib import MonitoringPlugin
 
 # it's nice to put the args at the top of the file as it is commonly referenced
 def getArgs():

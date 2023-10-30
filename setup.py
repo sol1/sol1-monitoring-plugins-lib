@@ -18,16 +18,16 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name="MonitoringPlugins",  
-    version="1.0.0",  
+    name="sol1-monitoring-plugins-lib",
+    version="1.0.0",
     author='Matthew Smith',
     author_email='matthew.smith@sol1.com.au',
     description='Simple API to manage the output for Nagios and Icinga Monitoring Plugins',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/sol1-matt/MonitoringPlugins',  
+    url='https://github.com/sol1-matt/sol1-monitoring-plugins-lib',
     project_urls={
-        "Bug Tracker": "https://github.com/sol1-matt/MonitoringPlugins/issues",
+        "Bug Tracker": "https://github.com/sol1-matt/sol1-monitoring-plugins-lib/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
