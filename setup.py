@@ -19,15 +19,15 @@ with open('requirements.txt') as f:
 
 setup(
     name="sol1-monitoring-plugins-lib",
-    version="1.0.0",
+    version="1.0.1",
     author='Matthew Smith',
     author_email='matthew.smith@sol1.com.au',
-    description='Simple API to manage the output for Nagios and Icinga Monitoring Plugins',
+    description='Simple Library to manage the output for Nagios and Icinga Monitoring Plugins',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/sol1-matt/sol1-monitoring-plugins-lib',
+    url='https://github.com/sol1/sol1-monitoring-plugins-lib',
     project_urls={
-        "Bug Tracker": "https://github.com/sol1-matt/sol1-monitoring-plugins-lib/issues",
+        "Bug Tracker": "https://github.com/sol1/sol1-monitoring-plugins-lib/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -36,7 +36,7 @@ setup(
     ],
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=requirements,
     test_suite='tests',
 )
