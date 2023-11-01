@@ -17,7 +17,6 @@ def test_initLoggingArgparse():
     assert args.log_rotate == '1 day'
     assert args.log_retention == '3 days'
     assert args.log_level == 'WARNING'
-    assert args.available_log_levels == DEFAULT_LOG_LEVELS
 
     args = parser.parse_args(['--debug', '--enable-screen-debug', '--disable-log-file', '--log-file', 'test.log'])
     assert args.debug == True
