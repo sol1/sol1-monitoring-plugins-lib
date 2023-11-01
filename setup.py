@@ -19,7 +19,7 @@ with open('requirements.txt') as f:
 
 setup(
     name="sol1-monitoring-plugins-lib",
-    version="1.0.1",
+    version="1.1.0",
     author='Matthew Smith',
     author_email='matthew.smith@sol1.com.au',
     description='Simple Library to manage the output for Nagios and Icinga Monitoring Plugins',

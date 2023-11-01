@@ -12,7 +12,20 @@ It has been designed so you can add multiple tests and the class will intelligen
 
 __Documentation__
 You can find documentation in the [`docs`](./docs/monitoring_plugins.md) folder. 
-Code examples can be found in the [`examples`](./examples/check_day_of_the_week.py) folder.
+Code usage examples can be found in the [`examples`](./examples/check_day_of_the_week.py) folder.
+
+__Maturity__: Stable.
+
+## Logging
+```python
+from sol1_monitoring_plugins_lib import initLogging, initLoggingArgparse, DEFAULT_LOG_LEVELS
+```
+
+The Logging functions setup loguru based logging for monitoring plugins with settings that allow for simple debugging during development and a short history for production usage by default.
+
+__Documentation__
+You can find documentation in the [`docs`](./docs/logging.md) folder. 
+Code usage examples can be found in the [`examples`](./examples/check_day_of_the_week.py) folder.
 
 __Maturity__: Stable.
 
@@ -36,8 +49,4 @@ python3 -m pip install -e .
 Run tests
 ```
 python3 -m pytest tests/
-```
-## Deploy 
-```
-python3 -m twine upload dist/*
 ```
