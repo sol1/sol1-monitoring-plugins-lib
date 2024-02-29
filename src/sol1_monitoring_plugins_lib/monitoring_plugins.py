@@ -64,7 +64,7 @@ class MonitoringPlugin:
         if do_exit:
             # Add the pipe '|' before perfdata if we have any
             if self.performance_data != "":
-                self.performance_data = "|" + self.performance_data
+                self._performance_data = "|" + self.performance_data
             print(f"{self.message}{self.performance_data}")
             exit(self.state)
         else:
